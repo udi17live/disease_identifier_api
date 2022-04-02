@@ -14,7 +14,6 @@ def index():
         'version': 1.0,
         'author': 'Uditha Mahindarathna',
         'github': 'https://github.com/udi17live',
-        'year': 2022,
         'description': 'This is an API to detect 2 diseases in the Pepper Plant via Image Processing. That is the Pepper Yellow Mottle Virus and Leaf Blight in pepper. This API is build as a part of my Final Year Project in Level 06 of the B.Eng Software Engineering course from Informatics Institute of Technology Sri Lanka (IIT) affiliated with University of Westminster. The project is purely for Educational Purposes and NOT production ready.'
     }
     return jsonify(result)
