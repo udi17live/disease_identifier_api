@@ -1,18 +1,13 @@
-import string
-
-from flask import Flask, jsonify, request
-import os
-import pickle
 import base64
 import io
+import os
 import random
+import string
 
-from tensorflow import keras
-from keras.preprocessing import image
-from keras.preprocessing.image import img_to_array
-from keras.models import load_model
-from sklearn.preprocessing import LabelBinarizer
 from PIL import Image, ImageFile
+from flask import Flask, jsonify, request
+from keras.preprocessing import image
+
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 import numpy as np
 
@@ -34,12 +29,6 @@ def index():
         'description': 'This is an API to detect 2 diseases in the Pepper Plant via Image Processing. That is the Pepper Yellow Mottle Virus and Leaf Blight in pepper. This API is build as a part of my Final Year Project in Level 06 of the B.Eng Software Engineering course from Informatics Institute of Technology Sri Lanka (IIT) affiliated with University of Westminster. The project is purely for Educational Purposes and NOT production ready.'
     }
     return jsonify(result)
-
-@app.route('/test', methods=['POST'])
-def test():
-    files = helpers.get_cnn_model_and_labels()
-    print("FILES: ", files)
-    return jsonify(True)
 
 
 @app.route('/predict-disease', methods=['POST'])
