@@ -35,6 +35,12 @@ def index():
     }
     return jsonify(result)
 
+@app.route('/test', methods=['POST'])
+def test():
+    files = helpers.get_cnn_model_and_labels()
+    print("FILES: ", files)
+    return jsonify(True)
+
 
 @app.route('/predict-disease', methods=['POST'])
 def predict_disease():
@@ -44,11 +50,24 @@ def predict_disease():
     decoded_image = base64.b64decode(encoded_image)
     leaf_image = Image.open(io.BytesIO(decoded_image))
     image_name_string = string.ascii_letters + string.digits + string.octdigits
-    image_name = ''.join((random.choice(image_name_string) for i in range(16))) + '.jpg'
+    image_name = 'static/images/uploaded/' + ''.join((random.choice(image_name_string) for i in range(16))) + '.jpg'
     leaf_image.save(image_name)
-    bg_removed_img = helpers.remove_image_background(leaf_image)
+    helpers.remove_image_background(image_name)
+    img = image.load_img(image_name, target_size=(256, 256, 3))
+    img = helpers.pre_process_images(img, target_size=(256, 256))
 
-    return image_name
+    model = helpers.get_cnn_model_and_labels()['model']
+    n_classes = helpers.get_cnn_model_and_labels()['n_classes']
+
+    prediction = model.predict(img)
+
+    results = np.argsort(prediction[0])[:-3:-1]
+
+    result = None
+    for i in range(1):
+        result = n_classes[results[i]]
+
+    return jsonify({"result": result})
 
 
 if __name__ == '__main__':

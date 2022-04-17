@@ -161,3 +161,7 @@ cython_debug/
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 .idea
 .vercel
+
+#ignore uploaded images, models and label files
+static/images
+static/models_labels
