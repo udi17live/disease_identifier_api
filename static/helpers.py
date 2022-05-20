@@ -57,3 +57,8 @@ def pre_process_images(img, target_size):
     img = img.reshape(1, 256, 256, 3)
 
     return img
+
+
+def get_percentage(value):
+    value = format(float(("%.17f" % value).rstrip('0').rstrip(".")), ".4f")
+    return format(float(value)*100, ".2f")

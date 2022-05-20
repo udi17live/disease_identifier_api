@@ -3,6 +3,7 @@ import io
 import os
 import random
 import string
+import operator
 
 from PIL import Image, ImageFile
 from flask import Flask, jsonify, request
@@ -49,14 +50,26 @@ def predict_disease():
     n_classes = helpers.get_cnn_model_and_labels()['n_classes']
 
     prediction = model.predict(img)
-
     results = np.argsort(prediction[0])[:-3:-1]
 
+    result_arr = []
     result = None
     for i in range(1):
         result = n_classes[results[i]]
 
-    return jsonify({"result": result})
+    for res in results:
+        resobj = {}
+        accuracy_percentage = float(helpers.get_percentage(prediction[0][res]))
+        # if accuracy_percentage > 0.0:
+        resobj['name'] = n_classes[res]
+        resobj['accuracy'] = accuracy_percentage
+        result_arr.append(resobj)
+
+    for v in result_arr:
+        print(v)
+
+    # return jsonify({"result": result})
+    return {"result": result_arr}
 
 
 if __name__ == '__main__':
